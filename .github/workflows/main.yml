@@ -1,1 +1,32 @@
+name: Lint & Deploy
 
+on:
+  push:
+    branches:
+      - main  # mainブランチにpushされたときに実行
+
+jobs:
+  lint-and-deploy:
+    runs-on: ubuntu-latest  # GitHubの仮想環境（Linux）で実行
+
+    steps:
+      - name: リポジトリのチェックアウト
+        uses: actions/checkout@v3
+
+      - name: Node.jsのセットアップ
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: パッケージのインストール
+        run: npm install
+
+      - name: Lintチェック
+        run: npm run lint
+
+      - name: Webサーバでデプロイ
+        if: success()  # Lintが成功したら実行
+        run: |
+          ssh -i ~/.ssh/github-actions -p 30032 deployer@wc5.mj-star.jp "cd /home/deployer/sites/autotest-cicd-repo.mj-star.jp && git pull origin main"
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
