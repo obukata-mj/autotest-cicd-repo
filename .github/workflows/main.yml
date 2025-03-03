@@ -25,6 +25,15 @@ jobs:
       - name: Lintチェック
         run: npm run lint
         working-directory: ./public # Lintも同じディレクトリで実行
+        continue-on-error: true  # エラーでも処理を継続する
+
+      - name: 失敗した場合、Slackに通知
+        if: failure()  # 直前のステップが失敗した場合に実行
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data \
+          '{
+            "text": "🚨 *Lintエラー発生* 🚨\nリポジトリ: ${GITHUB_REPOSITORY}\nブランチ: ${GITHUB_REF}\n実行者: ${GITHUB_ACTOR}\n詳細: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          }' ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: SSH鍵のセットアップ
         run: |
