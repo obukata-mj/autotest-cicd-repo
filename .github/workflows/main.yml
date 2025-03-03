@@ -26,9 +26,15 @@ jobs:
         run: npm run lint
         working-directory: ./public # Lintも同じディレクトリで実行
 
+      - name: SSH鍵のセットアップ
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/github-actions
+          chmod 600 ~/.ssh/github-actions
+          ssh-keyscan -p 30032 wc5.mj-star.jp >> ~/.ssh/known_hosts
+
       - name: Webサーバでデプロイ
         if: success()  # Lintが成功したら実行
         run: |
-          ssh -i ~/.ssh/github-actions -p 30032 deployer@wc5.mj-star.jp "cd /home/deployer/sites/autotest-cicd-repo.mj-star.jp && git pull origin main"
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh -i ~/.ssh/github-actions -p 30032 deployer@wc5.mj-star.jp \
+          "cd /home/deployer/sites/autotest-cicd-repo.mj-star.jp && git pull origin main"
