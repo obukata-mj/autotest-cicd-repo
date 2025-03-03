@@ -10,7 +10,7 @@
     "dev": "run-p postcss server",
     "postcss": "postcss 'assets/_postcss/main.css' -o 'assets/styles/main.css' --watch",
     "server": "browser-sync start --proxy 'http://francois-renewal.obkt' --files './' --watch '**/*'",
-    "lint": "run-s lint:markuplint lint:eslint lint:stylelint",
+    "lint": "run-p lint:markuplint lint:eslint lint:stylelint",
     "lint:markuplint": "markuplint '**/*.html' --allow-warnings",
     "lint:stylelint": "stylelint 'assets/**/*.css'",
     "lint:eslint": "eslint 'assets/**/*.js'",
