@@ -16,13 +16,15 @@ jobs:
       - name: Node.jsのセットアップ
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 22
 
       - name: パッケージのインストール
         run: npm install
+        working-directory: ./public  # package.json のあるディレクトリを指定
 
       - name: Lintチェック
         run: npm run lint
+        working-directory: ./public # Lintも同じディレクトリで実行
 
       - name: Webサーバでデプロイ
         if: success()  # Lintが成功したら実行
