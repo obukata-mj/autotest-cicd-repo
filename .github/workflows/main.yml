@@ -31,7 +31,7 @@ jobs:
         run: |
           curl -X POST -H 'Content-type: application/json' --data \
           '{
-            "text": "🚨 *Lintエラー発生* 🚨\nリポジトリ: {{ github.repository }}\nブランチ: ${{ github.ref }}\n実行者: ${{ github.actor }}\n詳細: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            "text": "🚨 *Lintエラー発生* 🚨\nリポジトリ: ${{ github.repository }}\nブランチ: ${{ github.ref }}\n実行者: ${{ github.actor }}\n詳細: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           }' ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: SSH鍵のセットアップ
