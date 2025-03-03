@@ -23,7 +23,7 @@ jobs:
         working-directory: ./public  # package.json のあるディレクトリを指定
 
       - name: Lintチェック
-        run: npm run lint
+        run: npm run lint || exit 1
         working-directory: ./public # Lintも同じディレクトリで実行
         continue-on-error: true  # エラーでも処理を継続する
 
