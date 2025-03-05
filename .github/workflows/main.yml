@@ -43,6 +43,7 @@ jobs:
         with:
           start: false  # Cypress内でサーバー起動しない設定
           wait-on: 'http://localhost:3000'  # サーバーが立ち上がるまで待機
+        working-directory: ./public
 
       - name: バックグラウンドのサーバを停止
         run: kill $(ps aux | grep 'npm run dev' | awk '{print $1}')  # サーバー停止
