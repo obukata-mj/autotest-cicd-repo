@@ -34,9 +34,19 @@ jobs:
             "text": "🚨 *Lintエラー発生* 🚨\nリポジトリ: ${{ github.repository }}\nブランチ: ${{ github.ref }}\n実行者: ${{ github.actor }}\n詳細: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           }' ${{ secrets.SLACK_WEBHOOK_URL }}
 
-      - name: ローカルホスト + Cypressチェック
-        run: run-s server cypress
+      - name: ローカルホスト設定
+        run: nohup npm run server & # サーバーをバックグラウンドで起動
         working-directory: ./public
+
+      - name: Cypressチェック
+        run: npm run cypress
+        working-directory: ./public
+        with:
+          start: false  # Cypress内でサーバー起動しない設定
+          wait-on: 'http://localhost:3000'  # サーバーが立ち上がるまで待機
+
+      - name: バックグラウンドのサーバを停止
+        run: kill $(ps aux | grep 'npm run dev' | awk '{print $1}')  # サーバー停止
 
       - name: SSH鍵のセットアップ
         run: |
