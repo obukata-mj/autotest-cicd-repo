@@ -39,10 +39,7 @@ jobs:
         working-directory: ./public
 
       - name: Cypressチェック
-        uses: cypress-io/github-action@v2
-        with:
-          start: false  # Cypress内でサーバー起動しない設定
-          wait-on: 'http://localhost:3000'  # サーバーが立ち上がるまで待機
+        run: npm run cypress
         working-directory: ./public
 
       - name: バックグラウンドのサーバを停止
