@@ -42,9 +42,6 @@ jobs:
         run: npm run cypress
         working-directory: ./public
 
-      - name: バックグラウンドのサーバを停止
-        run: kill $(ps aux | grep 'npm run dev' | awk '{print $1}')  # サーバー停止
-
       - name: SSH鍵のセットアップ
         run: |
           mkdir -p ~/.ssh
